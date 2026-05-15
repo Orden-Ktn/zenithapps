@@ -1,0 +1,576 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyView</title>
+    <link rel="icon" href="{% static 'images/SkyView.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/SkyView.css' %}">    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ── DARK THEME (default) ── */
+        :root, [data-theme="dark"] {
+            --gold: #C9A96E;
+            --gold-light: #E8D5A3;
+            --smoke-border: rgba(201,169,110,0.25);
+            --bg-base: #0a0a0f;
+            --bg-overlay: #0d0d1a;
+            --bg-card: rgba(255,255,255,0.04);
+            --bg-search: rgba(255,255,255,0.04);
+            --bg-grad-a: rgba(100,80,30,0.18);
+            --bg-grad-b: rgba(30,50,100,0.18);
+            --text-primary: #f5f0e8;
+            --text-muted: rgba(245,240,232,0.38);
+            --text-unit: rgba(245,240,232,0.35);
+            --text-placeholder: rgba(245,240,232,0.28);
+            --stat-divider: rgba(201,169,110,0.15);
+            --card-bottom-border: rgba(201,169,110,0.1);
+            --logo-filter: drop-shadow(0 0 12px rgba(201,169,110,0.4));
+            --toggle-bg: rgba(255,255,255,0.06);
+            --toggle-border: rgba(201,169,110,0.3);
+        }
+
+        /* ── LIGHT THEME ── */
+        [data-theme="light"] {
+            --gold: #7A5A0A;
+            --gold-light: #5C4208;
+            --smoke-border: rgba(122,90,10,0.22);
+            --bg-base: #F7F3EC;
+            --bg-overlay: #EDE7DA;
+            --bg-card: rgba(255,255,255,0.75);
+            --bg-search: rgba(255,255,255,0.75);
+            --bg-grad-a: rgba(201,169,110,0.14);
+            --bg-grad-b: rgba(122,90,10,0.08);
+            --text-primary: #1a1508;
+            --text-muted: rgba(26,21,8,0.45);
+            --text-unit: rgba(26,21,8,0.38);
+            --text-placeholder: rgba(26,21,8,0.3);
+            --stat-divider: rgba(122,90,10,0.15);
+            --card-bottom-border: rgba(122,90,10,0.12);
+            --logo-filter: drop-shadow(0 2px 8px rgba(122,90,10,0.2));
+            --toggle-bg: rgba(122,90,10,0.08);
+            --toggle-border: rgba(122,90,10,0.25);
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Jost', sans-serif;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            transition: background 0.45s ease, color 0.45s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%, var(--bg-grad-a) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 80% 90%, var(--bg-grad-b) 0%, transparent 60%),
+                radial-gradient(ellipse 100% 100% at 50% 50%, var(--bg-base) 0%, var(--bg-overlay) 100%);
+            z-index: 0;
+            pointer-events: none;
+            transition: background 0.45s ease;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* ── THEME TOGGLE ── */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--toggle-bg);
+            border: 1px solid var(--toggle-border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--gold);
+        }
+
+        .theme-toggle svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.3s ease;
+        }
+
+        .icon-sun  { display: none; }
+        .icon-moon { display: block; }
+        [data-theme="light"] .icon-sun  { display: block; }
+        [data-theme="light"] .icon-moon { display: none; }
+
+        /* ── LAYOUT ── */
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 4rem 1.5rem 5rem;
+        }
+
+        /* ── BRAND ── */
+        .brand {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            animation: fadeDown 0.8s ease both;
+        }
+
+        .brand-eyebrow {
+            font-family: 'Jost', sans-serif;
+            font-weight: 200;
+            font-size: 0.68rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.6rem;
+            opacity: 0.8;
+        }
+
+        .brand-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            width: clamp(48px, 8vw, 68px);
+            height: clamp(48px, 8vw, 68px);
+            object-fit: contain;
+            filter: var(--logo-filter);
+            transition: filter 0.45s ease;
+        }
+
+        .brand-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(3rem, 8vw, 5rem);
+            letter-spacing: 0.12em;
+            line-height: 1;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+            transition: color 0.45s ease;
+        }
+
+        .brand-title::after {
+            content: '';
+            display: block;
+            width: 40%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0.6rem auto 0;
+        }
+
+        /* ── SEARCH ── */
+        .search-wrapper {
+            width: 100%;
+            max-width: 520px;
+            margin-bottom: 3.5rem;
+            animation: fadeUp 0.9s 0.15s ease both;
+        }
+
+        .search-group {
+            display: flex;
+            align-items: center;
+            background: var(--bg-search);
+            border: 1px solid var(--smoke-border);
+            border-radius: 2px;
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.45s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .search-group:focus-within {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 1px rgba(201,169,110,0.15), 0 8px 32px rgba(201,169,110,0.08);
+        }
+
+        .search-icon {
+            padding: 0 1rem 0 1.25rem;
+            color: var(--gold);
+            flex-shrink: 0;
+            transition: color 0.45s ease;
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 0.06em;
+            color: var(--text-primary);
+            padding: 1rem 0;
+            caret-color: var(--gold);
+            transition: color 0.45s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-placeholder);
+            font-style: italic;
+        }
+
+        .search-btn {
+            background: transparent;
+            border: none;
+            border-left: 1px solid var(--smoke-border);
+            color: var(--gold);
+            font-family: 'Jost', sans-serif;
+            font-weight: 400;
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.25s ease, color 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background: rgba(201,169,110,0.12);
+            color: var(--gold-light);
+        }
+
+        /* ── WEATHER CARD ── */
+        .weather-card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg-card);
+            border: 1px solid var(--smoke-border);
+            border-radius: 2px;
+            overflow: hidden;
+            animation: fadeUp 0.7s 0.1s ease both;
+            backdrop-filter: blur(12px);
+            transition: background 0.45s ease, border-color 0.45s ease;
+        }
+
+        .weather-card::before {
+            content: '';
+            display: block;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .card-header-section {
+            padding: 2.5rem 2.5rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--card-bottom-border);
+            transition: border-color 0.45s ease;
+        }
+
+        .city-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+            transition: color 0.45s ease;
+        }
+
+        .weather-icon-wrap {
+            position: relative;
+            display: inline-block;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .weather-icon-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,169,110,0.12) 0%, transparent 70%);
+        }
+
+        .weather-icon-wrap img {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 16px rgba(201,169,110,0.35));
+            position: relative;
+            z-index: 1;
+        }
+
+        .temperature {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(3.5rem, 10vw, 5.5rem);
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            transition: color 0.45s ease;
+        }
+
+        .temperature sup {
+            font-size: 0.4em;
+            vertical-align: super;
+            color: var(--gold);
+            font-weight: 300;
+        }
+
+        .weather-description {
+            font-family: 'Jost', sans-serif;
+            font-weight: 200;
+            font-size: 0.82rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.85;
+        }
+
+        /* ── STATS ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .stat-item {
+            padding: 1.5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-item:first-child::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 1px;
+            background: var(--stat-divider);
+        }
+
+        .stat-label {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            font-size: 0.68rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            transition: color 0.45s ease;
+        }
+
+        .stat-icon {
+            margin-bottom: 0.3rem;
+            display: block;
+            opacity: 0.65;
+        }
+
+        .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+            transition: color 0.45s ease;
+        }
+
+        .stat-unit {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            font-size: 0.7rem;
+            color: var(--text-unit);
+            margin-left: 0.15rem;
+            transition: color 0.45s ease;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── COMPASS DECO ── */
+        .compass-deco {
+            position: fixed;
+            bottom: -60px;
+            right: -60px;
+            width: 280px;
+            height: 280px;
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Theme toggle -->
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Changer de thème">
+    <svg class="icon-moon" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <svg class="icon-sun" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+</button>
+
+<svg class="compass-deco" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="48" fill="none" stroke="#C9A96E" stroke-width="0.5"/>
+    <circle cx="50" cy="50" r="38" fill="none" stroke="#C9A96E" stroke-width="0.3"/>
+    <line x1="50" y1="2" x2="50" y2="98" stroke="#C9A96E" stroke-width="0.4"/>
+    <line x1="2" y1="50" x2="98" y2="50" stroke="#C9A96E" stroke-width="0.4"/>
+    <line x1="15" y1="15" x2="85" y2="85" stroke="#C9A96E" stroke-width="0.2"/>
+    <line x1="85" y1="15" x2="15" y2="85" stroke="#C9A96E" stroke-width="0.2"/>
+    <polygon points="50,4 53,20 50,24 47,20" fill="#C9A96E"/>
+    <polygon points="50,96 53,80 50,76 47,80" fill="#C9A96E" opacity="0.4"/>
+    <text x="50" y="11" text-anchor="middle" font-size="5" fill="#C9A96E" font-family="serif">N</text>
+</svg>
+
+<div class="page-wrapper">
+
+    <!-- Brand -->
+    <header class="brand">
+        <p class="brand-eyebrow">Météo &amp; Atmosphère</p>
+        <div class="brand-title-row">
+            <img src="{% static 'images/SkyView.png' %}" alt="SkyView logo" class="brand-logo">
+            <h1 class="brand-title">SkyView</h1>
+        </div>
+    </header>
+
+    <!-- Search -->
+    <form method="GET" class="search-wrapper">
+        <div class="search-group">
+            <span class="search-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+            </span>
+            <input
+                type="text"
+                name="city"
+                class="search-input"
+                placeholder="Entrez une ville…"
+                autocomplete="off"
+            >
+            <button type="submit" class="search-btn">Explorer</button>
+        </div>
+    </form>
+
+    <!-- Weather result -->
+    {% if weather %}
+    <div class="weather-card">
+
+        <div class="card-header-section">
+
+            <h2 class="city-name">{{ weather.city }}</h2>
+
+            <div class="weather-icon-wrap">
+                <img
+                    src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"
+                    alt="{{ weather.description }}"
+                >
+            </div>
+
+            <div class="temperature">
+                {{ weather.temperature }}<sup>°C</sup>
+            </div>
+
+            <p class="weather-description">{{ weather.description }}</p>
+
+        </div>
+
+        <div class="stats-row">
+
+            <div class="stat-item">
+                <span class="stat-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/>
+                    </svg>
+                </span>
+                <p class="stat-label">Humidité</p>
+                <div class="stat-value">{{ weather.humidity }}<span class="stat-unit">%</span></div>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>
+                    </svg>
+                </span>
+                <p class="stat-label">Vent</p>
+                <div class="stat-value">{{ weather.wind }}<span class="stat-unit">km/h</span></div>
+            </div>
+
+        </div>
+
+    </div>
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const html = document.documentElement;
+
+    // Restore saved preference
+    const saved = localStorage.getItem('skyview-theme') || 'dark';
+    html.setAttribute('data-theme', saved);
+
+    function toggleTheme() {
+        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('skyview-theme', next);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0b1120;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f1f5f9;
+    position: relative;
+    overflow-x: hidden;
+}
+
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+
+/* ── LAYOUT ── */
+.container {
+    width: 100%;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.card {
+    width: 100%;
+    max-width: 400px;
+    background: #111827;
+    border: 1px solid #1f2d45;
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+/* ── HEADER ── */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 2rem;
+}
+
+.swap-btn {
+    font-size: 22px;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.swap-btn:hover {
+    transform: rotate(180deg);
+}
+
+/* ── LOGO ── */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 2.2rem;
+}
+
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logo-text h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #f0eeff;
+    letter-spacing: -0.5px;
+    line-height: 1;
+}
+
+.logo-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #555568;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f1f5f9;
+    letter-spacing: -0.3px;
+    line-height: 1;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #4b6a99;
+    display: block;
+    margin-top: 3px;
+}
+
+/* ── AMOUNT BOX ── */
+.amount-box {
+    background: #0d1626;
+    border: 1px solid #1f2d45;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+}
+
+.amount-box label {
+    display: block;
+    font-size: 10px;
+    color: #4b6a99;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.amount-box input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: #f1f5f9;
+    -moz-appearance: textfield;
+}
+
+.amount-box input::-webkit-inner-spin-button,
+.amount-box input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.amount-box input::placeholder {
+    color: #2a3d5c;
+}
+
+/* ── CURRENCIES ROW ── */
+.currencies-row {
+    display: grid;
+    grid-template-columns: 1fr 44px 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.select-box {
+    background: #0d1626;
+    border: 1px solid #1f2d45;
+    border-radius: 14px;
+    padding: 14px 16px;
+}
+
+.select-box label {
+    display: block;
+    font-size: 10px;
+    color: #4b6a99;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.select-box select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #f1f5f9;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.select-box select option {
+    background: #111827;
+    color: #f1f5f9;
+}
+
+/* ── SWAP BUTTON ── */
+.swap-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1a2540;
+    border: 1px solid #1f2d45;
+    color: #4b6a99;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    padding: 0;
+}
+
+.swap-btn:hover {
+    background: #1a3670;
+    color: #60a5fa;
+    border-color: #2a4a80;
+}
+
+/* ── CONVERT BUTTON ── */
+.convert-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #1a56db;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+}
+
+.convert-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.convert-btn:active {
+    transform: scale(0.98);
+}
+
+/* ── RESULT ── */
+.result {
+    margin-top: 14px;
+    background: #0a1628;
+    border: 1px solid #1a3356;
+    border-radius: 14px;
+    padding: 18px;
+    animation: fadeIn 0.3s ease;
+}
+
+.result-label {
+    font-size: 10px;
+    color: #4b6a99;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.result-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+    color: #60a5fa;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

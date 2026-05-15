@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VorteKey</title>
+    <link rel="icon" href="{% static 'images/VorteKey.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/VorteKey.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+
+            <!-- LOGO -->
+            <div class="logo">
+                <div class="logo-circle">
+                    <img src="{% static 'images/VorteKey.png' %}" alt="Logo">
+                </div>
+                <div class="logo-text">
+                    <h1>VorteKey</h1>
+                    <span class="logo-tag">Générateur de mot de passe</span>
+                </div>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- LONGUEUR -->
+                <p class="section-label">Longueur</p>
+                <div class="range-row">
+                    <input
+                        type="range"
+                        min="4"
+                        max="50"
+                        value="12"
+                        id="range"
+                        name="length"
+                    >
+                    <span id="range-value">12</span>
+                </div>
+
+                <!-- OPTIONS -->
+                <p class="section-label">Options</p>
+                <div class="options">
+
+                    <label class="opt-card">
+                        <input type="checkbox" name="uppercase" checked>
+                        <div class="opt-check"><i class="fa-solid fa-check"></i></div>
+                        <span>Majuscules</span>
+                    </label>
+
+                    <label class="opt-card">
+                        <input type="checkbox" name="lowercase" checked>
+                        <div class="opt-check"><i class="fa-solid fa-check"></i></div>
+                        <span>Minuscules</span>
+                    </label>
+
+                    <label class="opt-card">
+                        <input type="checkbox" name="numbers" checked>
+                        <div class="opt-check"><i class="fa-solid fa-check"></i></div>
+                        <span>Chiffres</span>
+                    </label>
+
+                    <label class="opt-card">
+                        <input type="checkbox" name="symbols">
+                        <div class="opt-check"><i class="fa-solid fa-check"></i></div>
+                        <span>Symboles</span>
+                    </label>
+
+                </div>
+
+                <button type="submit">Générer un mot de passe</button>
+
+            </form>
+
+            {% if password %}
+            <div class="result">
+                <input type="text" id="password" value="{{ password }}" readonly>
+                <button type="button" onclick="copyPassword()">
+                    <i class="fa-regular fa-copy"></i>
+                </button>
+            </div>
+            {% endif %}
+
+            <div id="copy-message">✓ Mot de passe copié !</div>
+
+        </div>
+    </div>
+
+    <script src="{% static 'js/VorteKey.js' %}"></script>
+
+</body>
+
+</html>

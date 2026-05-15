@@ -1,0 +1,24 @@
+body{
+    transition: 0.5s;
+    min-height: 100vh;
+    color: white;
+}
+
+.sunny{
+    background: linear-gradient(to right,#f2994a,#f2c94c);
+}
+
+.rainy{
+    background: linear-gradient(to right,#4b79a1,#283e51);
+}
+
+.cloudy{
+    background: linear-gradient(to right,#757f9a,#d7dde8);
+}
+
+.card-weather{
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+}

@@ -1,0 +1,159 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devizio</title>
+    <link rel="icon" href="{% static 'images/DeviZio.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/DeviZio.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+
+            <!-- EN-TÊTE -->
+            <div class=" logo">
+                <div class="logo-circle">
+                    <img src="{% static 'images/DeviZio.png' %}" alt="Logo">
+                </div>
+                <div class="logo-text">
+                    <h1>Devizio</h1>
+                    <span class="logo-tag">Convertisseur de devises</span>
+                </div>
+            </div>
+
+          
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- MONTANT -->
+                <div class="amount-box">
+                    <label for="amount">Montant</label>
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        step="0.01"
+                        min="1"
+                        placeholder="0.00"
+                        required
+                        value="{{ request.POST.amount }}"
+                    >
+                </div>
+
+                <!-- DEVISES -->
+                <div class="currencies-row">
+
+                    <div class="select-box">
+                        <label for="from_currency">De</label>
+                        <select id="from_currency" name="from_currency">
+                            {% for currency in currencies %}
+                                <option value="{{ currency }}"
+                                    {% if from_currency == currency %}selected{% endif %}>
+                                    {{ currency }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- bouton swap -->
+                    <button type="button" class="swap-btn" onclick="swapCurrencies()">
+                        ⇄
+                    </button>
+
+                    <div class="select-box">
+                        <label for="to_currency">Vers</label>
+                        <select id="to_currency" name="to_currency">
+                            {% for currency in currencies %}
+                                <option value="{{ currency }}"
+                                    {% if to_currency == currency %}selected{% endif %}>
+                                    {{ currency }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="convert-btn">
+                    Convertir →
+                </button>
+
+            </form>
+
+            {% if result %}
+            <div class="result">
+                <p class="result-label">Résultat</p>
+                <p class="result-amount">{{ result }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    
+    <script src="{% static 'js/DeviZio.js' %}"></script>
+
+</body>
+
+<canvas id="bg-canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const symbols = ['€','$','£','¥','₣','₦','₹','¢','฿','₩','₪','₫','ƒ','₲','₡','₵'];
+
+    function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const particles = Array.from({length: 40}, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    sym: symbols[Math.floor(Math.random() * symbols.length)],
+    size: 11 + Math.random() * 14,
+    speed: 0.18 + Math.random() * 0.32,
+    opacity: 0.04 + Math.random() * 0.13,
+    drift: (Math.random() - 0.5) * 0.3,
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: 0.004 + Math.random() * 0.008,
+    rotation: (Math.random() - 0.5) * 0.4,
+    rotSpeed: (Math.random() - 0.5) * 0.003,
+    }));
+
+    function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of particles) {
+        p.wobble += p.wobbleSpeed;
+        p.rotation += p.rotSpeed;
+        p.y -= p.speed;
+        p.x += p.drift + Math.sin(p.wobble) * 0.4;
+        if (p.y < -30) { p.y = canvas.height + 20; p.x = Math.random() * canvas.width; }
+        if (p.x < -20) p.x = canvas.width + 10;
+        if (p.x > canvas.width + 20) p.x = -10;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.globalAlpha = p.opacity;
+        ctx.font = `500 ${p.size}px 'DM Mono', monospace`;
+        ctx.fillStyle = '#60a5fa';
+        ctx.textAlign = 'center';
+        ctx.fillText(p.sym, 0, 0);
+        ctx.restore();
+    }
+    requestAnimationFrame(draw);
+    }
+    draw();
+</script>
+
+</html>
