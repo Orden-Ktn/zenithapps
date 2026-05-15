@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Syne', sans-serif;
+    background: #09090c;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── CONTAINER ── */
+.container {
+    width: 100%;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* ── CARD ── */
+.card {
+    background: #0d0d0f;
+    border: 1px solid #22222a;
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(99, 60, 255, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: -60px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(0, 210, 150, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* ── LOGO ── */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 2.2rem;
+}
+
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logo-text h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #f0eeff;
+    letter-spacing: -0.5px;
+    line-height: 1;
+}
+
+.logo-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #555568;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* ── SECTION LABEL ── */
+.section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #555568;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+/* ── RANGE ── */
+.range-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 1.8rem;
+}
+
+input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: #1e1e28;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #633cff, #00d296);
+    border: 2px solid #0d0d0f;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #633cff, #00d296);
+    border: 2px solid #0d0d0f;
+    cursor: pointer;
+}
+
+#range-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: #f0eeff;
+    min-width: 28px;
+    text-align: right;
+}
+
+/* ── OPTIONS ── */
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+.opt-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #141420;
+    border: 1px solid #202030;
+    border-radius: 10px;
+    padding: 10px 13px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+}
+
+.opt-card:hover {
+    border-color: rgba(99, 60, 255, 0.3);
+    background: #181828;
+}
+
+.opt-card input[type="checkbox"] {
+    display: none;
+}
+
+.opt-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid #333348;
+    background: #0d0d0f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    font-size: 9px;
+    color: transparent;
+}
+
+.opt-card input[type="checkbox"]:checked ~ .opt-check {
+    background: linear-gradient(135deg, #633cff, #00d296);
+    border-color: transparent;
+    color: #fff;
+}
+
+.opt-card input[type="checkbox"]:checked ~ span {
+    color: #e0d8ff;
+}
+
+.opt-card span {
+    font-size: 13px;
+    color: #888899;
+    transition: color 0.2s;
+}
+
+/* ── SUBMIT BUTTON ── */
+button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #633cff, #00d296);
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: opacity 0.2s, transform 0.15s;
+    margin-bottom: 1.5rem;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
+
+button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+/* ── RESULT ── */
+.result {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #111118;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 0.6rem;
+}
+
+.result input[type="text"] {
+    flex: 1;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #00d296;
+    background: transparent;
+    border: none;
+    outline: none;
+    word-break: break-all;
+    min-width: 0;
+}
+
+.result button {
+    background: #1e1e2e;
+    border: 1px solid #333348;
+    border-radius: 8px;
+    padding: 7px 10px;
+    cursor: pointer;
+    color: #777790;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.result button:hover {
+    color: #00d296;
+    border-color: rgba(0, 210, 150, 0.4);
+    background: rgba(0, 210, 150, 0.06);
+}
+
+/* ── COPY MESSAGE ── */
+#copy-message {
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #00d296;
+    height: 18px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#copy-message.show {
+    opacity: 1;
+}
