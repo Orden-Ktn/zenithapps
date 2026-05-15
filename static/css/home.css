@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b0f1a;
+    color: white;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: #0f172a;
+    position: sticky;
+    top: 0;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #7c3aed;
+}
+
+.nav a {
+    color: #ccc;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+.nav a:hover {
+    color: #7c3aed;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 90px 20px;
+    background: linear-gradient(135deg, #0f172a, #1e1b4b);
+}
+
+.hero h1 {
+    font-size: 42px;
+}
+
+.hero p {
+    max-width: 600px;
+    margin: auto;
+    color: #bbb;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #7c3aed;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+/* APPS */
+.apps {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px 50px;
+}
+
+.card {
+    background: #111827;
+    padding: 25px;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.devizio { border-left: 4px solid #3b82f6; }
+.vortekey { border-left: 4px solid #ef4444; }
+.skyview { border-left: 4px solid #10b981; }
+.landinfo { border-left: 4px solid #f59e0b; }
+
+/* ABOUT */
+.about {
+    text-align: center;
+    padding: 60px 20px;
+    background: #0f172a;
+    color: #aaa;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 20px;
+    background: #020617;
+    color: #666;
+}
