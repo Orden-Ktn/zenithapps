@@ -8,6 +8,8 @@
     --vortekey:   #a855f7;
     --skyview:    #06b6d4;
     --landinfo:   #f59e0b;
+    --PharmaBenin: #5ef44b;
+    --Depenso: #e64949;
 }
 
 [data-theme="dark"] {
@@ -249,7 +251,7 @@ body::after {
 
 .hero h1 {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(56px, 9vw, 104px);
+    font-size: clamp(25px, 9vw, 64px);
     font-weight: 800;
     line-height: 0.92;
     letter-spacing: -0.045em;
@@ -392,11 +394,15 @@ body::after {
 .vortekey  { --c: var(--vortekey); }
 .skyview   { --c: var(--skyview);  }
 .landinfo  { --c: var(--landinfo); }
+.PharmaBenin  { --c: var(--PharmaBenin); }
+.Depenso  { --c: var(--Depenso); }
 
 .devizio:hover  { border-color:rgba(59,130,246,0.45);  }
 .vortekey:hover { border-color:rgba(168,85,247,0.45);  }
 .skyview:hover  { border-color:rgba(6,182,212,0.45);   }
 .landinfo:hover { border-color:rgba(245,158,11,0.45);  }
+.PharmaBenin:hover { border-color:rgba(94,244,75,0.45);  }
+.Depenso:hover { border-color:rgb(230,73,73,0.45);  }
 
 /* icon */
 .card-icon {
@@ -414,6 +420,8 @@ body::after {
 .vortekey .card-icon { background: rgba(168,85,247,0.12); }
 .skyview  .card-icon { background: rgba(6,182,212,0.12);  }
 .landinfo .card-icon { background: rgba(245,158,11,0.12); }
+.PharmaBenin .card-icon { background: rgba(94,244,75,0.12); }
+.Depenso .card-icon { background: rgba(230,73,73,0.12); }
 
 .card-top {
     display:flex; align-items:flex-start;
@@ -448,6 +456,8 @@ body::after {
 .vortekey:hover .arrow { background:var(--vortekey); }
 .skyview:hover  .arrow { background:var(--skyview);  }
 .landinfo:hover .arrow { background:var(--landinfo); }
+.PharmaBenin:hover .arrow { background:var(--PharmaBenin); }
+.Depenso:hover .arrow { background:var(--Depenso); }
 
 .card p {
     font-size:14px; font-weight:300;
@@ -467,6 +477,8 @@ body::after {
 .vortekey .card-line { background:var(--vortekey); }
 .skyview  .card-line { background:var(--skyview);  }
 .landinfo .card-line { background:var(--landinfo); }
+.PharmaBenin .card-line { background:var(--PharmaBenin); }
+.Depenso .card-line { background:var(--Depenso); }
 .card:hover .card-line { transform:scaleX(1); }
 
 /* ── FOOTER ── */
@@ -517,4 +529,11 @@ body::after {
     .grid   { grid-template-columns:1fr; }
     .footer { padding:20px; flex-direction:column; text-align:center; }
     .hero-logo { width:72px; height:72px; }
+}
+
+.card-icon img {
+    width: 150%;
+    height: 150%;
+    object-fit: contain;
+    border-radius: inherit;
 }

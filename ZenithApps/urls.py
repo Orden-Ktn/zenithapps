@@ -8,4 +8,6 @@ urlpatterns = [
     path('DeviZio/', include('DeviZio.urls')),
     path('LandInfo/', include('LandInfo.urls')),
     path('SkyView/', include('SkyView.urls')),
+    path('PharmaBenin/', include('PharmaBenin.urls')),
+    path('Depenso/', include('Depenso.urls')),
 ]

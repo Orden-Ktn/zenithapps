@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription — Depenso</title>
+    <link rel="icon" type="image/png" href="{% static 'images/Depenso.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/Register.css' %}">
+</head>
+
+<body>
+
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Basculer le thème">
+        <span id="themeIcon">🌙</span>
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        <span id="themeLabel">Sombre</span>
+    </button>
+
+    <div class="auth-wrapper">
+
+        <!-- LOGO -->
+        <div class="auth-brand">
+            <img
+                class="brand-logo"
+                src="{% static 'images/Depenso.png' %}"
+                alt="Depenso"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            >
+            <div class="brand-logo-fallback">D</div>
+            <span class="brand-name">Depenso</span>
+        </div>
+
+        <!-- CARD -->
+        <div class="auth-card">
+            <p class="card-subtitle" style="text-align: center;">Rejoignez Depenso et gérez vos finances.</p>
+
+            <!-- Messages d'erreur Django -->
+            
+            {% if form.errors %}
+            <div class="alert alert-error" data-auto-hide>
+                <span>⚠️</span>
+                <span>Identifiant ou mot de passe incorrect. Veuillez réessayer.</span>
+            </div>
+            {% endif %}
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}" data-auto-hide>
+                    <span>{% if message.tags == 'error' %}⚠️{% else %}✅{% endif %}</span>
+                    <span>{{ message }}</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="POST" id="registerForm">
+                {% csrf_token %}
+
+                <!-- Nom d'utilisateur -->
+                <div class="field">
+                    <label for="id_username">Nom d'utilisateur</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🏷️</span>
+                        <input
+                            type="text"
+                            id="id_username"
+                            name="username"
+                            placeholder="jean_dupont"
+                            autocomplete="username"
+                            required
+                            value="{{ form.username.value|default:'' }}"
+                            class="{% if form.username.errors %}input-error{% endif %}"
+                        >
+                    </div>
+                    {% if form.username.errors %}
+                    <ul class="field-errors">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="field">
+                    <label for="id_password1">Mot de passe</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔒</span>
+                        <input
+                            type="password"
+                            id="id_password1"
+                            name="password1"
+                            placeholder="Minimum 8 caractères"
+                            autocomplete="new-password"
+                            required
+                            oninput="checkStrength(this.value)"
+                            class="{% if form.password1.errors %}input-error{% endif %}"
+                        >
+                        <button type="button" class="toggle-pass" onclick="togglePass('id_password1', this)">👁</button>
+                    </div>
+                    <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                    <div class="strength-label" id="strengthLabel"></div>
+                    {% if form.password1.errors %}
+                    <ul class="field-errors">{% for e in form.password1.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+
+                <!-- Confirmation -->
+                <div class="field">
+                    <label for="id_password2">Confirmer le mot de passe</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔑</span>
+                        <input
+                            type="password"
+                            id="id_password2"
+                            name="password2"
+                            placeholder="Répétez le mot de passe"
+                            autocomplete="new-password"
+                            required
+                            class="{% if form.password2.errors %}input-error{% endif %}"
+                        >
+                        <button type="button" class="toggle-pass" onclick="togglePass('id_password2', this)">👁</button>
+                    </div>
+                    {% if form.password2.errors %}
+                    <ul class="field-errors">{% for e in form.password2.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <span>Créer mon compte</span>
+                    <span>✨</span>
+                </button>
+            </form>
+
+            <div class="divider">ou</div>
+
+            <p class="switch-page">
+                Déjà inscrit ? <a href="{% url 'login' %}">Se connecter</a>
+            </p>
+        </div>
+
+    </div>
+
+    <script src="{% static 'js/Register.js' %}"></script>
+
+</body>
+</html>

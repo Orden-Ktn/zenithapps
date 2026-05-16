@@ -35,9 +35,7 @@
         <div class="mesh-blob"></div>
     </div>
 
-    <div class="hero-logo-wrap">
-        <img class="hero-logo" src="{% static 'images/logo_zenithapps.png' %}" alt="ZenithApps">
-    </div>
+    
 
     <h1>Zenith<br><em>Apps</em></h1>
 </section>
@@ -48,7 +46,9 @@
     <div class="grid">
 
         <a href="{% url 'DeviZio' %}" class="card devizio">
-            <div class="card-icon">⚙️</div>
+            <div class="card-icon">
+                <img src="{% static 'images/DeviZio.png' %}" alt="DeviZio">
+            </div>
             <div class="card-top">
                 <h3>DeviZio</h3>
                 <div class="arrow">↗</div>
@@ -58,7 +58,9 @@
         </a>
 
         <a href="{% url 'VorteKey' %}" class="card vortekey">
-            <div class="card-icon">🔐</div>
+            <div class="card-icon">
+                <img src="{% static 'images/VorteKey.png' %}" alt="VorteKey">
+            </div>
             <div class="card-top">
                 <h3>VorteKey</h3>
                 <div class="arrow">↗</div>
@@ -68,7 +70,9 @@
         </a>
 
         <a href="{% url 'SkyView' %}" class="card skyview">
-            <div class="card-icon">🌦️</div>
+            <div class="card-icon">
+                <img src="{% static 'images/SkyView.png' %}" alt="SkyView">
+            </div>
             <div class="card-top">
                 <h3>SkyView</h3>
                 <div class="arrow">↗</div>
@@ -78,7 +82,9 @@
         </a>
 
         <a href="{% url 'LandInfo' %}" class="card landinfo">
-            <div class="card-icon">🌍</div>
+            <div class="card-icon">
+                <img src="{% static 'images/LandInfo.png' %}" alt="LandInfo">
+            </div>
             <div class="card-top">
                 <h3>LandInfo</h3>
                 <div class="arrow">↗</div>
@@ -87,6 +93,30 @@
             <div class="card-line"></div>
         </a>
 
+        <a href="{% url 'PharmaBenin' %}" class="card PharmaBenin">
+            <div class="card-icon">
+                <img src="{% static 'images/PharmaBenin.png' %}" alt="PharmaBenin">
+            </div>
+            <div class="card-top">
+                <h3>PharmaBenin</h3>
+                <div class="arrow">↗</div>
+            </div>
+            <p>Répertoire des pharmacies du Bénin.</p>
+            <div class="card-line"></div>
+        </a>
+
+        <a href="{% url 'login' %}" class="card Depenso">
+            <div class="card-icon">
+                <img src="{% static 'images/Depenso.png' %}" alt="Depenso">
+            </div>
+            <div class="card-top">
+                <h3>Depenso</h3>
+                <div class="arrow">↗</div>
+            </div>
+            <p>Gestionnaire de dépenses.</p>
+            <div class="card-line"></div>
+        </a>
+        
     </div>
 </section>
 

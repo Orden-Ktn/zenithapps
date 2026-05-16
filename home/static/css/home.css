@@ -1,0 +1,539 @@
+
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── TOKENS ── */
+:root {
+    --devizio:    #3b82f6;
+    --vortekey:   #a855f7;
+    --skyview:    #06b6d4;
+    --landinfo:   #f59e0b;
+    --PharmaBenin: #5ef44b;
+    --Depenso: #e64949;
+}
+
+[data-theme="dark"] {
+    --bg:         #080b10;
+    --bg2:        #0c101a;
+    --surface:    #0e1219;
+    --surface2:   #131823;
+    --border:     rgba(255,255,255,0.07);
+    --border2:    rgba(255,255,255,0.12);
+    --text:       #e8eaf0;
+    --muted:      #5a6070;
+    --white:      #ffffff;
+    --shadow:     rgba(0,0,0,0.6);
+    --hero-glow:  rgba(59,130,246,0.13);
+    --noise-op:   0.025;
+}
+
+[data-theme="light"] {
+    --bg:         #f0f2f8;
+    --bg2:        #e8ebf5;
+    --surface:    #ffffff;
+    --surface2:   #f7f8fc;
+    --border:     rgba(0,0,0,0.08);
+    --border2:    rgba(0,0,0,0.14);
+    --text:       #1a1d2e;
+    --muted:      #7a8099;
+    --white:      #000000;
+    --shadow:     rgba(0,0,0,0.1);
+    --hero-glow:  rgba(59,130,246,0.08);
+    --noise-op:   0.015;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.4s, color 0.4s;
+}
+
+/* ── NOISE OVERLAY ── */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: var(--noise-op);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── HEADER ── */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 68px;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.4s, border-color 0.4s;
+}
+
+.logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    object-fit: contain;
+    transition: transform 0.4s cubic-bezier(.22,.68,0,1.4);
+}
+.logo:hover img { transform: rotate(15deg) scale(1.1); }
+
+.logo-name { color: var(--white); transition: color 0.4s; }
+
+/* ── THEME TOGGLE ── */
+.theme-btn {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border2);
+    background: var(--surface2);
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s, border-color 0.3s;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
+
+.theme-btn:hover { border-color: var(--devizio); }
+
+.toggle-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: transform 0.35s cubic-bezier(.22,.68,0,1.4), background 0.3s;
+    box-shadow: 0 1px 4px var(--shadow);
+}
+
+[data-theme="light"] .toggle-thumb {
+    transform: translateX(24px);
+    background: var(--devizio);
+}
+
+/* ── HERO ── */
+.hero {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* animated mesh background */
+.hero-mesh {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.mesh-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    animation: drift 8s ease-in-out infinite alternate;
+}
+
+.mesh-blob:nth-child(1) {
+    width: 500px; height: 400px;
+    background: var(--devizio);
+    top: -100px; left: -100px;
+    animation-delay: 0s;
+}
+.mesh-blob:nth-child(2) {
+    width: 400px; height: 350px;
+    background: var(--vortekey);
+    top: -80px; right: -80px;
+    animation-delay: -3s;
+}
+.mesh-blob:nth-child(3) {
+    width: 300px; height: 300px;
+    background: var(--skyview);
+    bottom: -60px; left: 30%;
+    animation-delay: -5s;
+}
+
+@keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(40px, 30px) scale(1.1); }
+}
+
+/* logo centré dans le hero */
+.hero-logo-wrap {
+    position: relative;
+    margin-bottom: 32px;
+    animation: popIn 0.7s cubic-bezier(.22,.68,0,1.4) both;
+}
+
+.hero-logo {
+    width: 88px;
+    height: 88px;
+    border-radius: 22px;
+    object-fit: contain;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    padding: 12px;
+    box-shadow: 0 8px 40px var(--shadow), 0 0 0 1px var(--border);
+    transition: transform 0.5s cubic-bezier(.22,.68,0,1.4), box-shadow 0.4s;
+}
+
+.hero-logo:hover {
+    transform: translateY(-6px) rotate(-4deg) scale(1.04);
+    box-shadow: 0 20px 60px var(--shadow);
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.7) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* badge */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border2);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+    background: var(--surface);
+    animation: fadeDown 0.6s 0.15s ease both;
+}
+
+.badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+
+.hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(25px, 9vw, 64px);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    color: var(--white);
+    animation: fadeDown 0.6s 0.25s ease both;
+}
+
+.hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--devizio) 0%, var(--vortekey) 60%, var(--skyview) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-sub {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 440px;
+    margin: 20px auto 0;
+    line-height: 1.75;
+    animation: fadeDown 0.6s 0.35s ease both;
+}
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* scroll hint */
+.scroll-hint {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: fadeDown 0.6s 0.5s ease both;
+}
+
+.scroll-hint-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: scrollDrop 2s ease-in-out infinite;
+}
+
+@keyframes scrollDrop {
+    0%,100%{ transform: scaleY(1); opacity: 1; }
+    50%{ transform: scaleY(0.5); opacity: 0.4; }
+}
+
+/* ── SECTION APPS ── */
+#apps {
+    position: relative;
+    z-index: 1;
+    padding: 20px 48px 100px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+}
+
+.section-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.section-line { flex:1; height:1px; background:var(--border); }
+.section-count { font-size:11px; color:var(--muted); }
+
+/* ── GRID ── */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+/* ── CARD ── */
+.card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 32px 32px 28px;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transition: border-color 0.35s, transform 0.35s cubic-bezier(.22,.68,0,1.2),
+                box-shadow 0.35s, background 0.4s;
+    animation: fadeUp 0.55s ease both;
+}
+
+.card:nth-child(1){ animation-delay:0.05s; }
+.card:nth-child(2){ animation-delay:0.15s; }
+.card:nth-child(3){ animation-delay:0.25s; }
+.card:nth-child(4){ animation-delay:0.35s; }
+
+@keyframes fadeUp {
+    from{ opacity:0; transform:translateY(28px); }
+    to{   opacity:1; transform:translateY(0); }
+}
+
+/* corner glow */
+.card::before {
+    content:'';
+    position:absolute;
+    top:-70px; right:-70px;
+    width:220px; height:220px;
+    border-radius:50%;
+    background: radial-gradient(circle, var(--c) 0%, transparent 70%);
+    opacity:0;
+    transition: opacity 0.45s;
+    pointer-events:none;
+}
+.card:hover::before { opacity:0.22; }
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 64px var(--shadow);
+}
+
+/* per-app colors */
+.devizio   { --c: var(--devizio);  }
+.vortekey  { --c: var(--vortekey); }
+.skyview   { --c: var(--skyview);  }
+.landinfo  { --c: var(--landinfo); }
+.PharmaBenin  { --c: var(--PharmaBenin); }
+.Depenso  { --c: var(--Depenso); }
+
+.devizio:hover  { border-color:rgba(59,130,246,0.45);  }
+.vortekey:hover { border-color:rgba(168,85,247,0.45);  }
+.skyview:hover  { border-color:rgba(6,182,212,0.45);   }
+.landinfo:hover { border-color:rgba(245,158,11,0.45);  }
+.PharmaBenin:hover { border-color:rgba(94,244,75,0.45);  }
+.Depenso:hover { border-color:rgb(230,73,73,0.45);  }
+
+/* icon */
+.card-icon {
+    width:50px; height:50px;
+    border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px;
+    margin-bottom:22px;
+    border: 1px solid var(--border);
+    transition: transform 0.4s cubic-bezier(.22,.68,0,1.4);
+}
+.card:hover .card-icon { transform: scale(1.1) rotate(-4deg); }
+
+.devizio  .card-icon { background: rgba(59,130,246,0.12); }
+.vortekey .card-icon { background: rgba(168,85,247,0.12); }
+.skyview  .card-icon { background: rgba(6,182,212,0.12);  }
+.landinfo .card-icon { background: rgba(245,158,11,0.12); }
+.PharmaBenin .card-icon { background: rgba(94,244,75,0.12); }
+.Depenso .card-icon { background: rgba(230,73,73,0.12); }
+
+.card-top {
+    display:flex; align-items:flex-start;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+
+.card h3 {
+    font-family:'Syne', sans-serif;
+    font-size:24px; font-weight:700;
+    letter-spacing:-0.03em;
+    color:var(--white);
+    transition: color 0.4s;
+}
+
+.arrow {
+    width:30px; height:30px;
+    border-radius:50%;
+    border:1px solid var(--border2);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--muted);
+    font-size:13px;
+    transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.35s;
+    flex-shrink:0;
+}
+.card:hover .arrow {
+    color:#fff;
+    border-color:transparent;
+    transform: translate(3px,-3px);
+}
+.devizio:hover  .arrow { background:var(--devizio);  }
+.vortekey:hover .arrow { background:var(--vortekey); }
+.skyview:hover  .arrow { background:var(--skyview);  }
+.landinfo:hover .arrow { background:var(--landinfo); }
+.PharmaBenin:hover .arrow { background:var(--PharmaBenin); }
+.Depenso:hover .arrow { background:var(--Depenso); }
+
+.card p {
+    font-size:14px; font-weight:300;
+    color:var(--muted); line-height:1.7;
+}
+
+/* accent stripe bottom */
+.card-line {
+    position:absolute;
+    bottom:0; left:0; right:0;
+    height:2px;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition: transform 0.45s cubic-bezier(.22,.68,0,1.2);
+}
+.devizio  .card-line { background:var(--devizio);  }
+.vortekey .card-line { background:var(--vortekey); }
+.skyview  .card-line { background:var(--skyview);  }
+.landinfo .card-line { background:var(--landinfo); }
+.PharmaBenin .card-line { background:var(--PharmaBenin); }
+.Depenso .card-line { background:var(--Depenso); }
+.card:hover .card-line { transform:scaleX(1); }
+
+/* ── FOOTER ── */
+.footer {
+    position:relative; z-index:1;
+    border-top:1px solid var(--border);
+    padding:28px 48px;
+    display:flex; align-items:center;
+    justify-content:center;
+    flex-wrap:wrap; gap:10px;
+    transition: border-color 0.4s;
+}
+
+.footer p {
+    font-size:13px;
+    color:var(--muted);
+}
+
+.portfolio-link {
+    font-size:13px;
+    font-weight:500;
+    color: var(--text);
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding: 3px 10px;
+    border-radius:6px;
+    border:1px solid var(--border2);
+    background:var(--surface);
+    transition: color 0.25s, border-color 0.25s, background 0.25s, transform 0.25s;
+}
+
+.portfolio-link:hover {
+    color:#fff;
+    border-color: var(--devizio);
+    background: rgba(59,130,246,0.12);
+    transform: translateY(-1px);
+}
+
+.portfolio-link svg { width:12px; height:12px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width:700px) {
+    .header { padding:0 20px; }
+    .hero   { padding:64px 20px 48px; }
+    #apps   { padding:16px 20px 60px; }
+    .grid   { grid-template-columns:1fr; }
+    .footer { padding:20px; flex-direction:column; text-align:center; }
+    .hero-logo { width:72px; height:72px; }
+}
+
+.card-icon img {
+    width: 150%;
+    height: 150%;
+    object-fit: contain;
+    border-radius: inherit;
+}

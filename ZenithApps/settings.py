@@ -9,11 +9,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-xxxxxxxx'
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    'zenithapps.pythonanywhere.com',
-]
+# ALLOWED_HOSTS = [
+#     'zenithapps.pythonanywhere.com',
+# ]
 
 
 # APPLICATIONS
@@ -25,11 +25,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'DeviZio',
     'LandInfo',
     'SkyView',
     'VorteKey',
+    'PharmaBenin',
+    'Depenso',
     'home',
 ]
 
@@ -37,15 +38,14 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",   # ← sessions
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",              # ← CSRF
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",   # ← messages
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 
 # URLS
 
@@ -74,6 +74,22 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],   # dossier templates global
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",      # ← user dans templates
+                "django.contrib.messages.context_processors.messages",  # ← messages
+            ],
+        },
+    },
+]
+
 
 # WSGI
 
@@ -89,6 +105,11 @@ DATABASES = {
     }
 }
 
+
+LOGIN_URL          = "/connexion/"      # redirigé ici si @login_required
+LOGIN_REDIRECT_URL = "/"               # après connexion réussie sans "next"
+LOGOUT_REDIRECT_URL = "/connexion/"   # après déconnexion
+ 
 
 # PASSWORD VALIDATION
 
@@ -133,3 +154,13 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # DEFAULT PRIMARY KEY
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 3600 secondes = 1 heure
+SESSION_COOKIE_AGE = 3600
+
+# Expire à la fermeture du navigateur (optionnel mais recommandé)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Ne prolonge pas la session automatiquement à chaque requête
+SESSION_SAVE_EVERY_REQUEST = False
+

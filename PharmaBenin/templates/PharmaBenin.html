@@ -1,0 +1,109 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaBenin</title>
+    <link rel="icon" type="image/png" href="{% static 'images/PharmaBenin.png' %}">
+    <link rel="stylesheet" href="{% static 'css/PharmaBenin.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+</head>
+
+<body>
+
+<header>
+    <div class="pb-logo">
+        <img src="{% static 'images/PharmaBenin.png' %}" alt="PharmaBenin logo">
+        <span class="pb-logo-text">PharmaBenin</span>
+    </div>
+    <p class="header-sub">Toutes les pharmacies du Bénin issues de U.B.PHAR</p>
+
+    <div class="search-box">
+        <form class="search-form" method="GET">
+            <div class="search-wrap">
+                <i class="ti ti-search search-icon" aria-hidden="true"></i>
+                <input
+                    class="search-input"
+                    type="text"
+                    name="q"
+                    placeholder="Pharmacie, ville…"
+                    value="{{ request.GET.q }}"
+                    autocomplete="off"
+                >
+            </div>
+            <button class="search-btn" type="submit">Rechercher</button>
+        </form>
+    </div>
+</header>
+
+<div class="page-wrap">
+    <div class="cards-grid">
+
+        {% for pharmacy in pharmacies %}
+        <div class="card">
+
+            <div class="card-top">
+                <div class="card-icon">
+                    <i class="ti ti-building-hospital" aria-hidden="true"></i>
+                </div>
+                <div class="card-title-wrap">
+                    <div class="card-name">{{ pharmacy.name }}</div>
+                </div>
+                {% if pharmacy.maps_link %}
+                <a class="maps-btn" href="{{ pharmacy.maps_link }}" target="_blank" rel="noopener">
+                    <i class="ti ti-map-pin" style="font-size:12px" aria-hidden="true"></i>
+                    Localiser
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="card-divider"></div>
+
+            <div class="card-fields">
+
+                <div class="field">
+                    <span class="field-label">
+                        <i class="ti ti-map-2" aria-hidden="true"></i> Ville
+                    </span>
+                    <span class="field-value">{{ pharmacy.city }}</span>
+                </div>
+
+                <div class="field">
+                    <span class="field-label">
+                        <i class="ti ti-phone" aria-hidden="true"></i> Téléphone
+                    </span>
+                    <span class="field-value">{{ pharmacy.address|default:'—' }}</span>
+                </div>
+
+                <div class="field full">
+                    <span class="field-label">
+                        <i class="ti ti-home" aria-hidden="true"></i> Adresse
+                    </span>
+                    <span class="field-value">{{ pharmacy.phone|default:'—' }}</span>
+                </div>
+
+                <div class="field full">
+                    <span class="field-label">
+                        <i class="ti ti-stethoscope" aria-hidden="true"></i> Responsable
+                    </span>
+                    <span class="field-value">{{ pharmacy.doctor|default:'—' }}</span>
+                </div>
+
+            </div>
+
+        </div>
+        {% empty %}
+        <div class="empty">
+            <i class="ti ti-search-off" aria-hidden="true"></i>
+            Aucune pharmacie trouvée.
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+</body>
+</html>

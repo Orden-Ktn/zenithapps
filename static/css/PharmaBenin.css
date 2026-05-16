@@ -1,0 +1,327 @@
+
+
+/* ── RESET & BASE ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --green-dark:   #0F6E56;
+    --green-mid:    #1D9E75;
+    --green-light:  #E1F5EE;
+    --green-border: #9FE1CB;
+    --bg:           #f4f6f5;
+    --card-bg:      #ffffff;
+    --border:       #e0e6e3;
+    --text:         #1a1a1a;
+    --text-soft:    #555;
+    --label:        #999;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+    background: var(--green-dark);
+    padding: 2rem 1.25rem 2.75rem;
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    pointer-events: none;
+}
+header::after {
+    content: '';
+    position: absolute;
+    right: 60px; top: 80px;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+}
+
+.pb-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+}
+
+.pb-logo img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.pb-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.3px;
+}
+
+.header-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.60);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+}
+
+/* ── SEARCH ── */
+.search-box {
+    width: 100%;
+    max-width: 520px;
+}
+
+.search-form {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 0; /* allow shrink on mobile */
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.50);
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    height: 44px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 10px;
+    padding: 0 14px 0 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    /* Prevent zoom on iOS */
+    font-size: max(14px, 16px);
+}
+.search-input::placeholder { color: rgba(255,255,255,0.40); }
+.search-input:focus {
+    border-color: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.16);
+}
+
+.search-btn {
+    height: 44px;
+    padding: 0 18px;
+    background: #fff;
+    color: var(--green-dark);
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+}
+.search-btn:hover { opacity: 0.88; }
+
+/* ── STATS BAR ── */
+.stats-bar {
+    background: #fff;
+    border-bottom: 0.5px solid #e0e0e0;
+    padding: 0.6rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 12px;
+    color: #777;
+    flex-wrap: wrap;
+}
+
+.stat-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    flex-shrink: 0;
+}
+
+/* ── MAIN GRID ── */
+.page-wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.25rem 1rem 3rem;
+}
+
+/* Single column by default (mobile) */
+.cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+/* 2 columns on wider screens */
+@media (min-width: 680px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 3 columns on large screens */
+@media (min-width: 1080px) {
+    .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ── CARD ── */
+.card {
+    background: var(--card-bg);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.card:hover {
+    border-color: var(--green-border);
+    box-shadow: 0 2px 14px rgba(15,110,86,0.08);
+}
+
+/* Card top row: icon + name + maps btn */
+.card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.card-icon {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    background: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--green-dark);
+    font-size: 17px;
+    margin-top: 2px;
+}
+
+.card-title-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.maps-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    background: var(--green-light);
+    color: var(--green-dark);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    margin-top: 2px;
+}
+.maps-btn:hover { background: var(--green-border); }
+
+.card-divider {
+    height: 0.5px;
+    background: #eef2f0;
+    margin: 12px 0;
+}
+
+/* Fields: always 2 columns inside a card */
+.card-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 14px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field-label {
+    font-size: 10.5px;
+    color: var(--label);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.field-value {
+    font-size: 13px;
+    color: #2a2a2a;
+    font-weight: 400;
+    word-break: break-word;
+}
+
+/* ── EMPTY STATE ── */
+.empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3.5rem 1rem;
+    color: #aaa;
+    font-size: 14px;
+}
+.empty i {
+    font-size: 36px;
+    color: #ccc;
+    display: block;
+    margin-bottom: 10px;
+}
