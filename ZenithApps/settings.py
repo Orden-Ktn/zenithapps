@@ -9,11 +9,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-xxxxxxxx'
 
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = [
-#     'zenithapps.pythonanywhere.com',
-# ]
+ALLOWED_HOSTS = [
+    'zenithapps.pythonanywhere.com',
+]
 
 
 # APPLICATIONS
